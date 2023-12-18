@@ -40,6 +40,7 @@ public class MainPage extends JFrame implements Runnable {
 		try{
 			Thread.sleep(7000);
 			setVisible(false);
+			new LoginPage();
 		} catch(Exception e)
 		{
 			e.printStackTrace();
