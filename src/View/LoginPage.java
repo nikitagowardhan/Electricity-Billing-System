@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-public class LoginPage extends JFrame  {
+public class LoginPage extends JFrame implements ActionListener  {
 	
 	Choice logginin;
 	JButton login, cancel, signup;
@@ -51,18 +51,24 @@ public class LoginPage extends JFrame  {
         Image i2 = i1.getImage().getScaledInstance(16, 16, Image.SCALE_DEFAULT);
         login = new JButton("Login", new ImageIcon(i2));
         login.setBounds(330, 160, 100, 20);
+        login.setForeground(Color.BLUE);
+        login.addActionListener(this);
         add(login);
         
         ImageIcon i3 = new ImageIcon(ClassLoader.getSystemResource("icon/cancel.jpg"));
         Image i4 = i3.getImage().getScaledInstance(16, 16, Image.SCALE_DEFAULT);
         cancel = new JButton("Cancel", new ImageIcon(i4));
         cancel.setBounds(450, 160, 100, 20);
+        cancel.setForeground(Color.BLUE);
+        cancel.addActionListener(this);
         add(cancel);
         
         ImageIcon i5 = new ImageIcon(ClassLoader.getSystemResource("icon/signup.png"));
         Image i6 = i5.getImage().getScaledInstance(16, 16, Image.SCALE_DEFAULT);
         signup = new JButton("Signup", new ImageIcon(i6));
         signup.setBounds(380, 200, 100, 20);
+        signup.setForeground(Color.BLUE);
+        signup.addActionListener(this);
         add(signup);
         
         ImageIcon i7 = new ImageIcon(ClassLoader.getSystemResource("icon/second.jpg"));
@@ -76,10 +82,25 @@ public class LoginPage extends JFrame  {
         setVisible(true);
 		
 	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		
+		 if (e.getSource() == login) {
+		 } else if (e.getSource() == cancel) {
+	            setVisible(false);
+	        } else if (e.getSource() == signup) {
+	            setVisible(false);
+	            
+	            new SignUpPage();
+		 }
+		
+	}
 	
 	public static void main(String[] args) {
  		new LoginPage();
 
  	}
+
+	
 	
 }
