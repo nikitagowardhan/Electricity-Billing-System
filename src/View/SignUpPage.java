@@ -6,15 +6,26 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.sql.Statement;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import com.mysql.jdbc.Connection;
+
+import Controller.EbsDao;
 public class SignUpPage extends JFrame implements ActionListener {
 
-	Choice accountType;
-	JTextField meter, username, name, password;
+	 Choice accountType;
+	 JTextField meter, username, name, password;
 	 JButton create, back;
 	 SignUpPage(){
 	        
@@ -109,7 +120,27 @@ public class SignUpPage extends JFrame implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if(e.getSource()== create)
 			{
-				
+			String acctype=accountType.getSelectedItem();
+			String cusername = username.getText();
+			String cname= name.getText();
+			String cpassword = password.getText();
+			String cmeter = meter.getText();
+			
+			try {
+			    EbsDao eb = new EbsDao();
+			    
+			    java.sql.Connection c = eb.getConnect();
+			    Statement s = c.createStatement();
+			    String q = "insert into Login values('" + cmeter + "','" + cusername + "','" + cname + "','" + cpassword + "','" + acctype + "')";
+			    s.executeUpdate(q); 
+			    //for popup
+			    JOptionPane.showMessageDialog(this, "Account Created Succesfully");
+			    setVisible(false);
+			    new LoginPage();
+			   //c.close(); 
+			} catch (ClassNotFoundException | SQLException e1) {
+			    e1.printStackTrace();
+			}
 			}
 			else if(e.getSource()==back)
 			{
@@ -122,8 +153,5 @@ public class SignUpPage extends JFrame implements ActionListener {
 		 new SignUpPage();
 	}
 
-
-
-	
-	 }
+ }
 
