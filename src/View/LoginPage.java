@@ -5,13 +5,18 @@ import java.awt.Color;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 import javax.swing.*;
+
+import Controller.EbsDao;
 
 public class LoginPage extends JFrame implements ActionListener  {
 	
 	Choice logginin;
 	JButton login, cancel, signup;
+	JTextField username,password;
 	
 	public LoginPage()
 	{
@@ -24,7 +29,7 @@ public class LoginPage extends JFrame implements ActionListener  {
 		lusername.setBounds(300, 20, 100, 20);
 		add(lusername);
 		
-		JTextField username = new JTextField();
+		 username = new JTextField();
 	    username.setBounds(400, 20, 150, 20);
 	    add(username);
 		
@@ -33,7 +38,7 @@ public class LoginPage extends JFrame implements ActionListener  {
         add(lpassword);
         
        
-        JTextField password = new JTextField();
+        password = new JTextField();
         password.setBounds(400, 60, 150, 20);
         add(password);
         
@@ -85,10 +90,44 @@ public class LoginPage extends JFrame implements ActionListener  {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		 if (e.getSource() == login) {
-		 } else if (e.getSource() == cancel) {
+		 if (e.getSource() == login)
+		 { // Code for handling login button click
+			String uname = username.getText();
+			String pass = password.getText();
+			String choice= logginin.getSelectedItem();
+			
+			try
+			{
+               EbsDao eb = new EbsDao();
+			    
+			    java.sql.Connection c = eb.getConnect();
+			    Statement s = c.createStatement();
+			    String q = "Select *from login where username ='"+uname+"' and password ='"+pass+"'and usertype ='"+choice+"' ";
+			  //we have to store all data into ResultSet
+			    ResultSet rs = s.executeQuery(q);
+			    
+			    if(rs.next())
+			    {
+			    	setVisible(false);
+			    	new Project();
+			    }
+			    else
+			    {
+			    	JOptionPane.showMessageDialog(this, "Invalid Login");
+			    	username.setText("");
+			    	password.setText("");
+			    }
+			    }
+			catch(Exception e1)
+			{
+				e1.printStackTrace();
+			}
+		 } 
+		 else if (e.getSource() == cancel) 
+		 {
 	            setVisible(false);
-	        } else if (e.getSource() == signup) {
+	        } else if (e.getSource() == signup)
+	        {
 	            setVisible(false);
 	            
 	            new SignUpPage();
